@@ -3,13 +3,18 @@
 import argparse
 import json
 
+from fuzzywuzzy import process
+
 
 def main():
     args = handle_args()
     topics = load_topics()
 
-    if args.topic in topics:
-        print(topics[args.topic])
+    # Get topic
+    topic, score = process.extractOne(args.topic, topics.keys(), score_cutoff=75)
+
+    if topic:
+        print(topics[topic])
     else:
         print("Unknown topic")
 
