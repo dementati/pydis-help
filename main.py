@@ -11,18 +11,19 @@ def main():
     topics = load_topics()
 
     # Get topic
-    topic, score = process.extractOne(args.topic, topics.keys(), score_cutoff=75)
+    matches = process.extractBests(args.topic, topics.keys(), score_cutoff=60)
 
-    if topic:
-        print(topics[topic])
-    else:
-        print("Unknown topic")
+    for topic, score in matches:
+        if topic:
+            print(f"{topic:20} - {score} - {topics[topic]}")
+        else:
+            print("Unknown topic")
 
 
 def handle_args():
     parser = argparse.ArgumentParser(description='PyDis help snippets')
     parser.prog = "pydis"
-    parser.add_argument("-t", "--topic", dest="topic", action="store", help="Help topic", required=True)
+    parser.add_argument("topic", action="store", help="Help topic")
     return parser.parse_args()
 
 
